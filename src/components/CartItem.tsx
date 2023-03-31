@@ -10,21 +10,40 @@ type CartItemProps = {
 }
 
 export function CartItem({ id, quantity}: CartItemProps) {
-    const { removeFromCart } = useShoppingCart()
+    const { increaseCartQuantity, decreaseCartQuantity, removeFromCart } =
+      useShoppingCart();
     const item = storeItems.find(item => item.id === id)
     if (item == null) return null
   return (
-    <Stack direction='horizontal' gap={2} className="d-flex align-items-center">
-        <img src={item.thumbnail} style={{width: "125px", height: "75px", objectFit: "cover"}} />
-        <div className='me-auto'>
-            <div>
-                {item.title} {quantity > 1 && (<span className='text-muted' style={{fontSize: ".65rem"}}>x{quantity}</span>)}
-            </div>
-            <div className='text-muted' style={{fontSize: ".75rem"}}>{formatCurrency(item.price)}</div>
+    <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
+      <img
+        src={item.thumbnail}
+        style={{ width: "125px", height: "75px", objectFit: "cover" }}
+      />
+      <div className="me-auto">
+        <div>
+          {item.title}{" "}
+          {quantity > 1 && (
+            <span className="text-muted" style={{ fontSize: ".65rem" }}>
+              x{quantity}
+            </span>
+          )}
         </div>
-        <div>{formatCurrency(item.price * quantity)}</div>
-        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>&times;</Button>
+        <div className="text-muted" style={{ fontSize: ".75rem" }}>
+          {formatCurrency(item.price)}
+        </div>
+      </div>
+      <div>{formatCurrency(item.price * quantity)}</div>
+      <Button onClick={() => increaseCartQuantity(item.id)}>+</Button>
+      <Button onClick={() => decreaseCartQuantity(item.id)}>-</Button>
+      <Button
+        variant="outline-danger"
+        size="sm"
+        onClick={() => removeFromCart(item.id)}
+      >
+        &times;
+      </Button>
     </Stack>
-  )
+  );
 }
  
